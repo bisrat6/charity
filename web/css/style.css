@@ -159,6 +159,48 @@ a {
   font-weight: 500;
 }
 
+/* Mobile hamburger (visual only — no JS) */
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  margin-left: 0.5rem;
+  align-self: center;
+}
+
+.nav-toggle:focus {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+.hamburger {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text-dark);
+  position: relative;
+}
+
+.hamburger::before,
+.hamburger::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height: 2px;
+  background: var(--text-dark);
+}
+
+.hamburger::before {
+  top: -7px;
+}
+
+.hamburger::after {
+  top: 7px;
+}
+
 /* Buttons */
 .btn {
   padding: 0.75rem 1.75rem;
@@ -817,6 +859,15 @@ a {
 
   .hero {
     height: 400px;
+  }
+
+  /* Show hamburger and hide full nav on small screens (visual only) */
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .nav-menu {
+    display: none;
   }
 
   .container {
