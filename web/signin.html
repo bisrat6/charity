@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - CORNERSTONE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">CORNERSTONE</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">How it works</a></li>
+                <li><a href="about.html" class="nav-link">For charities</a></li>
+                <li><a href="involved.html" class="nav-link">For individuals</a></li>
+                <li><a href="signin.html" class="nav-link active">Sign in</a></li>
+                <li><a href="involved.html" class="btn btn-primary">Get Start</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Split Screen Sign In -->
+    <div class="signin-wrapper">
+        <!-- Left Side - Welcome Message & Features -->
+        <div class="signin-left">
+            <div class="signin-left-content">
+                <h1>Welcome Back to CORNERSTONE</h1>
+                <p>
+                    We're glad to see you again! Sign in to continue making a difference in the lives of those who need it most. 
+                    Your impact matters, and together we're building foundations for brighter futures.
+                </p>
+
+                <!-- Features List -->
+                <div class="signin-features">
+                    <div class="signin-feature">
+                        <div class="signin-feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="signin-feature-text">
+                            <h4>Track Your Impact</h4>
+                            <p>See how your contributions are changing lives</p>
+                        </div>
+                    </div>
+
+                    <div class="signin-feature">
+                        <div class="signin-feature-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="signin-feature-text">
+                            <h4>Manage Donations</h4>
+                            <p>Easy access to your giving history and receipts</p>
+                        </div>
+                    </div>
+
+                    <div class="signin-feature">
+                        <div class="signin-feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="signin-feature-text">
+                            <h4>Join the Community</h4>
+                            <p>Connect with other changemakers worldwide</p>
+                        </div>
+                    </div>
+                </div>
+
+                <p style="margin-top: 3rem; font-size: 0.9375rem; opacity: 0.8;">
+                    <i class="fas fa-quote-left"></i> 
+                    "The stone that the builders rejected has become the cornerstone." - Psalm 118:22
+                </p>
+            </div>
+        </div>
+
+        <!-- Right Side - Sign In Form -->
+        <div class="signin-right">
+            <div class="signin-container">
+                <!-- Header -->
+                <div class="signin-header">
+                    <h1>Sign In</h1>
+                    <p>Enter your credentials to access your account</p>
+                </div>
+
+                <!-- Social Sign In Buttons -->
+                <div class="social-signin-buttons">
+                    <button class="btn-social btn-google">
+                        <i class="fab fa-google"></i>
+                        <span>Continue with Google</span>
+                    </button>
+                    <button class="btn-social btn-facebook">
+                        <i class="fab fa-facebook"></i>
+                        <span>Continue with Facebook</span>
+                    </button>
+                    <button class="btn-social btn-apple">
+                        <i class="fab fa-apple"></i>
+                        <span>Continue with Apple</span>
+                    </button>
+                </div>
+
+                <!-- Divider -->
+                <div class="signin-divider">Or continue with email</div>
+
+                <!-- Sign In Form -->
+                <form>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            class="form-input" 
+                            placeholder="your.email@example.com" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            class="form-input" 
+                            placeholder="Enter your password" 
+                            required
+                        >
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <div class="checkbox-group" style="margin-bottom: 0;">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">Remember me</label>
+                        </div>
+                        <a href="#" style="color: var(--accent-blue); font-size: 0.875rem; text-decoration: none;">
+                            Forgot password?
+                        </a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
+                        Sign In
+                    </button>
+
+                    <div class="signin-footer">
+                        Don't have an account? <a href="signup.html">Sign up for free</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
