@@ -26,50 +26,70 @@ const seed = async () => {
     ]);
 
     console.log("Creating users...");
-    const pw = await bcrypt.hash("password123", 10);
+    const plainPw = "password123";
+    // Let model pre-save hook hash the password
     const admin = await User.create({
-      name: "Admin",
+      fullName: "Admin",
       email: "admin@local",
-      password: pw,
+      email: "admin@example.com",
+      password: plainPw,
       role: "admin",
     });
     const user = await User.create({
-      name: "Dev User",
-      email: "user@local",
-      password: pw,
+      fullName: "Dev User",
+      email: "user@example.com",
+      password: plainPw,
     });
 
     console.log("Creating campaigns...");
     const camp1 = await Campaign.create({
       title: "Community Relief",
       description: "Help local families",
-      goal: 5000,
-      raised: 250,
+      goalAmount: 5000,
+      currentAmount: 0,
+      status: "active",
+      createdBy: admin._id,
     });
     const camp2 = await Campaign.create({
       title: "School Supplies",
       description: "Support kids education",
-      goal: 2000,
-      raised: 100,
+      goalAmount: 2000,
+      currentAmount: 0,
+      status: "active",
+      createdBy: admin._id,
     });
 
     console.log("Creating donations...");
-    await Donation.create({
-      donor: user._id,
+    const d1 = await Donation.create({
+      userId: user._id,
       amount: 50,
       currency: "USD",
-      campaign: camp1._id,
+      donationType: "one-time",
+      status: "completed",
     });
-    await Donation.create({
-      donor: user._id,
+    // increment campaign currentAmount to reflect donation
+    await Campaign.findByIdAndUpdate(camp1._id, {
+      $inc: { currentAmount: d1.amount },
+    });
+
+    const d2 = await Donation.create({
+      userId: user._id,
       amount: 25,
       currency: "USD",
-      campaign: camp2._id,
+      donationType: "one-time",
+      status: "completed",
+    });
+    await Campaign.findByIdAndUpdate(camp2._id, {
+      $inc: { currentAmount: d2.amount },
     });
 
     console.log("Creating volunteer entries...");
     await Volunteer.create({
-      user: user._id,
+      userId: user._id,
+      phone: "+250700000000",
+      skillset: ["community outreach"],
+      availability: "weekends",
+      interests: ["education"],
       message: "Happy to help locally",
       status: "pending",
     });

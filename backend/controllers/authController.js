@@ -16,14 +16,13 @@ exports.signup = async (req, res) => {
   if (!errors.isEmpty())
     return res.status(400).json({ errors: errors.array() });
 
-  const { name, email, password } = req.body;
+  const { fullName, email, password } = req.body;
   try {
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ msg: "User already exists" });
 
-    const salt = await bcrypt.genSalt(10);
-    const hashed = await bcrypt.hash(password, salt);
-    user = new User({ name, email, password: hashed });
+    // Let User model pre-save hook hash the password
+    user = new User({ fullName, email, password });
     await user.save();
 
     const token = signToken(user);
@@ -31,7 +30,7 @@ exports.signup = async (req, res) => {
       token,
       user: {
         id: user.id,
-        name: user.name,
+        fullName: user.fullName,
         email: user.email,
         role: user.role,
       },
@@ -49,7 +48,8 @@ exports.signin = async (req, res) => {
 
   const { email, password } = req.body;
   try {
-    const user = await User.findOne({ email });
+    // include password field for verification
+    const user = await User.findOne({ email }).select("+password");
     if (!user) return res.status(400).json({ msg: "Invalid credentials" });
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -60,7 +60,7 @@ exports.signin = async (req, res) => {
       token,
       user: {
         id: user.id,
-        name: user.name,
+        fullName: user.fullName,
         email: user.email,
         role: user.role,
       },
@@ -129,8 +129,8 @@ exports.resetPassword = async (req, res) => {
     const user = await User.findById(decoded.id);
     if (!user) return res.status(400).json({ msg: "Invalid token" });
 
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
+    // Assign plain password and let pre-save hook hash it
+    user.password = password;
     await user.save();
 
     res.json({ msg: "Password has been reset successfully" });

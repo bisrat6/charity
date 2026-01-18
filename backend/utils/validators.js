@@ -3,7 +3,7 @@ const { body } = require("express-validator");
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
 exports.signupValidation = [
-  body("name").trim().notEmpty().withMessage("Name is required"),
+  body("fullName").trim().notEmpty().withMessage("Full name is required"),
   body("email").isEmail().withMessage("Valid email is required"),
   body("password")
     .matches(passwordRegex)

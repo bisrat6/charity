@@ -25,7 +25,7 @@
         "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@local\",\n  \"password\": \"Password1\"\n}"
+          "raw": "{\n  \"fullName\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"Password1\"\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/api/auth/signup",
@@ -41,7 +41,7 @@
         "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"email\": \"test@local\",\n  \"password\": \"Password1\"\n}"
+          "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"Password1\"\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/api/auth/signin",
@@ -55,7 +55,10 @@
       "request": {
         "method": "POST",
         "header": [{ "key": "Content-Type", "value": "application/json" }],
-        "body": { "mode": "raw", "raw": "{\n  \"email\": \"test@local\"\n}" },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"user@example.com\"\n}"
+        },
         "url": {
           "raw": "{{baseUrl}}/api/auth/forgot-password",
           "host": ["{{baseUrl}}"],
