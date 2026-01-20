@@ -30,7 +30,6 @@ const seed = async () => {
     // Let model pre-save hook hash the password
     const admin = await User.create({
       fullName: "Admin",
-      email: "admin@local",
       email: "admin@example.com",
       password: plainPw,
       role: "admin",

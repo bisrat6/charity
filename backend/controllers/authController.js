@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const User = require("../models/User");
-const nodemailer = require("nodemailer");
+const emailService = require("../utils/emailService");
 
 const signToken = (user) => {
   const payload = { id: user.id, role: user.role };
@@ -89,30 +89,8 @@ exports.forgotPassword = async (req, res) => {
       { expiresIn: "1h" },
     );
 
-    // Prepare email (only send if env configured)
-    if (
-      process.env.EMAIL_HOST &&
-      process.env.EMAIL_USER &&
-      process.env.EMAIL_PASS
-    ) {
-      const transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
-        },
-      });
-
-      const resetUrl = `${process.env.FRONTEND_URL || "http://localhost:3000"}/reset-password?token=${resetToken}`;
-      await transporter.sendMail({
-        from: process.env.EMAIL_USER,
-        to: user.email,
-        subject: "Password reset",
-        text: `Reset your password: ${resetUrl}`,
-      });
-    } else {
-      console.log("Reset token (no email configured):", resetToken);
-    }
+    // Send password reset email using centralized service
+    await emailService.sendPasswordResetEmail(user.email, user.fullName, resetToken);
 
     res.json({ msg: "If an account exists, a reset email has been sent." });
   } catch (err) {

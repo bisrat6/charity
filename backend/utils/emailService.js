@@ -117,8 +117,50 @@ const sendDonationReceipt = async (email, name, donationDetails) => {
     }
 };
 
+/**
+ * Send password reset email
+ * @param {string} email - Recipient email
+ * @param {string} name - Recipient name
+ * @param {string} resetToken - JWT reset token
+ */
+const sendPasswordResetEmail = async (email, name, resetToken) => {
+    try {
+        const resetUrl = `${process.env.FRONTEND_URL || "http://localhost:3000"}/reset-password?token=${resetToken}`;
+
+        const info = await transporter.sendMail({
+            from: `"${process.env.FROM_NAME || 'Charity App'}" <${process.env.FROM_EMAIL || 'noreply@charityapp.com'}>`,
+            to: email,
+            subject: 'Password Reset Request',
+            text: `Hello ${name},\n\nYou requested a password reset. Click the link below to reset your password:\n\n${resetUrl}\n\nThis link will expire in 1 hour.\n\nIf you didn't request this, please ignore this email.\n\nBest regards,\nThe Team`,
+            html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2>Password Reset Request</h2>
+          <p>Dear ${name},</p>
+          <p>You requested a password reset for your account. Click the button below to reset your password:</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${resetUrl}" style="background-color: #007bff; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">Reset Password</a>
+          </div>
+          <p>Or copy and paste this link into your browser:</p>
+          <p style="word-break: break-all; color: #666;">${resetUrl}</p>
+          <p><strong>This link will expire in 1 hour.</strong></p>
+          <p>If you didn't request a password reset, please ignore this email. Your password will remain unchanged.</p>
+          <br>
+          <p>Best regards,</p>
+          <p>The Charity App Team</p>
+        </div>
+      `,
+        });
+        console.log('Password reset email sent: %s', info.messageId);
+        return info;
+    } catch (error) {
+        console.error('Error sending password reset email:', error);
+        return null;
+    }
+};
+
 module.exports = {
     sendWelcomeEmail,
     sendVolunteerConfirmation,
-    sendDonationReceipt
+    sendDonationReceipt,
+    sendPasswordResetEmail
 };

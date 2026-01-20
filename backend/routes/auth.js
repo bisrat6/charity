@@ -22,6 +22,6 @@ router.post(
 );
 
 // GET /api/auth/me (protected)
-router.get("/me", auth, authController.me);
+router.get("/me", auth.protect, authController.me);
 
 module.exports = router;

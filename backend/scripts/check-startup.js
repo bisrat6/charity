@@ -7,11 +7,11 @@ const Campaign = require("../models/Campaign");
 const run = async () => {
   await connectDB();
   try {
-    const existing = await User.findOne({ email: "sample@local" });
+    const existing = await User.findOne({ email: "sample@example.com" });
     if (!existing) {
       const u = new User({
-        name: "Sample User",
-        email: "sample@local",
+        fullName: "Sample User",
+        email: "sample@example.com",
         password: "changeme",
       });
       await u.save();
@@ -20,12 +20,21 @@ const run = async () => {
 
     const c = await Campaign.findOne({ title: "Sample Campaign" });
     if (!c) {
-      await new Campaign({
-        title: "Sample Campaign",
-        description: "Auto-created campaign",
-        goal: 1000,
-      }).save();
-      console.log("Created sample campaign");
+      // Create sample campaign with required fields
+      const adminUser = await User.findOne({ email: "admin@example.com" });
+      const creatorId = adminUser ? adminUser._id : existing ? existing._id : null;
+
+      if (creatorId) {
+        await new Campaign({
+          title: "Sample Campaign",
+          description: "Auto-created campaign",
+          goalAmount: 1000,
+          createdBy: creatorId,
+        }).save();
+        console.log("Created sample campaign");
+      } else {
+        console.log("No user found to create campaign");
+      }
     }
   } catch (err) {
     console.error("Startup check error:", err);
