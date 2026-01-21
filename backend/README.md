@@ -26,13 +26,25 @@ npm run check-startup
 
 Import `backend/CORNERSTONE-API.postman_collection.json` into Postman to get ready-made requests for local development. Set the `baseUrl` variable to `http://localhost:5000` and, after signing in, paste the returned token into the `token` variable to test protected endpoints.
 
-## Auth endpoints
+## Donation endpoints (Chapa)
 
-- `POST /api/auth/signup` — body: `{ name, email, password }`
-- `POST /api/auth/signin` — body: `{ email, password }` (returns `token`)
-- `POST /api/auth/forgot-password` — body: `{ email }` (sends/logs reset token)
-- `POST /api/auth/reset-password` — body: `{ token, password }`
-- `GET /api/auth/me` — protected; header `Authorization: Bearer <token>`
+- `POST /api/donations/create-payment-intent` — body: `{ amount, currency, campaignId?, donationType?, tier? }` (protected, returns Chapa checkout URL)
+- `POST /api/donations/webhook` — Chapa webhook endpoint (public, called by Chapa)
+- `GET /api/donations/user/:userId` — get user's donations (protected)
+- `GET /api/donations/stats` — get donation stats
+
+### Chapa Setup
+
+- Set `CHAPA_SECRET_KEY` in your `.env` file.
+- Set `BACKEND_URL` and `FRONTEND_URL` for correct callback/return URLs.
+- Ensure your webhook endpoint `/api/donations/webhook` is accessible by Chapa (public URL in production).
+
+### Donation Flow
+
+1. Frontend calls `create-payment-intent` to get Chapa checkout URL.
+2. User completes payment on Chapa.
+3. Chapa calls your webhook with payment status.
+4. On success: donation is saved, campaign progress is updated, and a receipt is emailed to the donor.
 
 ## Dev tips
 
