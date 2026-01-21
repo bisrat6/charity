@@ -25,6 +25,9 @@ exports.signup = async (req, res) => {
     user = new User({ fullName, email, password });
     await user.save();
 
+    // Send welcome email
+    await emailService.sendWelcomeEmail(user.email, user.fullName);
+
     const token = signToken(user);
     res.json({
       token,
@@ -90,7 +93,11 @@ exports.forgotPassword = async (req, res) => {
     );
 
     // Send password reset email using centralized service
-    await emailService.sendPasswordResetEmail(user.email, user.fullName, resetToken);
+    await emailService.sendPasswordResetEmail(
+      user.email,
+      user.fullName,
+      resetToken,
+    );
 
     res.json({ msg: "If an account exists, a reset email has been sent." });
   } catch (err) {

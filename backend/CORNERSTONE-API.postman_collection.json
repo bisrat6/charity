@@ -289,6 +289,127 @@
           ]
         }
       }
+    },
+    {
+      "name": "Volunteers - Apply",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"phone\": \"0912345678\",\n  \"skillset\": [\"teaching\"],\n  \"availability\": \"weekends\",\n  \"interests\": [\"education\"],\n  \"message\": \"I want to help.\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/volunteers/apply",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "volunteers", "apply"]
+        }
+      }
+    },
+    {
+      "name": "Volunteers - List Applications (admin)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/api/volunteers/applications",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "volunteers", "applications"]
+        }
+      }
+    },
+    {
+      "name": "Volunteers - Update Status (admin)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"approved\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/volunteers/1234567890/status",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "volunteers", "1234567890", "status"]
+        }
+      }
+    },
+    {
+      "name": "Volunteers - Get User Application",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/api/volunteers/user/{{userId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "volunteers", "user", "{{userId}}"]
+        }
+      }
+    },
+    {
+      "name": "Donations - Create Payment Intent (Chapa)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amount\": 100,\n  \"currency\": \"ETB\",\n  \"campaignId\": \"<optional_campaign_id>\",\n  \"donationType\": \"one-time\",\n  \"tier\": \"bronze\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/donations/create-payment-intent",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "donations", "create-payment-intent"]
+        }
+      }
+    },
+    {
+      "name": "Donations - Webhook (Chapa)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"tx_ref\": \"<chapa_tx_ref>\",\n  \"status\": \"success\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/donations/webhook",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "donations", "webhook"]
+        }
+      }
+    },
+    {
+      "name": "Donations - Get User Donations",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/api/donations/user/{{userId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "donations", "user", "{{userId}}"]
+        }
+      }
+    },
+    {
+      "name": "Donations - Get Stats",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/donations/stats",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "donations", "stats"]
+        }
+      }
     }
   ],
   "variable": [
