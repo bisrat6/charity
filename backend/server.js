@@ -24,6 +24,8 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/health', require('./routes/health'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/volunteers', require('./routes/volunteers'));
+app.use('/api/campaigns', require('./routes/campaigns'));
+app.use('/api/stats', require('./routes/stats'));
 
 // Root endpoint
 app.get('/', (req, res) =>

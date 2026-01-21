@@ -13,8 +13,13 @@
         "header": [],
         "url": {
           "raw": "{{baseUrl}}/api/health",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "health"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "health"
+          ]
         }
       }
     },
@@ -22,15 +27,26 @@
       "name": "Auth - Signup",
       "request": {
         "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"fullName\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"Password1\"\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/api/auth/signup",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "auth", "signup"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "signup"
+          ]
         }
       }
     },
@@ -38,15 +54,26 @@
       "name": "Auth - Signin",
       "request": {
         "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"Password1\"\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/api/auth/signin",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "auth", "signin"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "signin"
+          ]
         }
       }
     },
@@ -54,15 +81,26 @@
       "name": "Auth - Forgot Password",
       "request": {
         "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"email\": \"user@example.com\"\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/api/auth/forgot-password",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "auth", "forgot-password"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "forgot-password"
+          ]
         }
       }
     },
@@ -70,15 +108,26 @@
       "name": "Auth - Reset Password",
       "request": {
         "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"token\": \"<paste-token-here>\",\n  \"password\": \"Newpass1\"\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/api/auth/reset-password",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "auth", "reset-password"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "reset-password"
+          ]
         }
       }
     },
@@ -86,17 +135,170 @@
       "name": "Auth - Me (protected)",
       "request": {
         "method": "GET",
-        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
         "url": {
           "raw": "{{baseUrl}}/api/auth/me",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "auth", "me"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "me"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Campaigns - List",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/campaigns",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "campaigns"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Campaigns - Get One",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/campaigns/<campaign-id>",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "campaigns",
+            "<campaign-id>"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Campaigns - Create (Admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"New School Building\",\n  \"description\": \"Raising funds to build a new school block.\",\n  \"goalAmount\": 50000,\n  \"status\": \"active\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/campaigns",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "campaigns"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Campaigns - Update (Admin)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Updated Campaign Title\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/campaigns/<campaign-id>",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "campaigns",
+            "<campaign-id>"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Campaigns - Delete (Admin)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/campaigns/<campaign-id>",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "campaigns",
+            "<campaign-id>"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Stats - Get Overall",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/stats",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "stats"
+          ]
         }
       }
     }
   ],
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:5000" },
-    { "key": "token", "value": "" }
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
   ]
 }
