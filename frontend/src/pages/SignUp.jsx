@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 import { authAPI } from '../services/api'
+import { useAuth } from '../contexts/AuthContext'
 
 function SignUp() {
   const navigate = useNavigate()
+  const { login } = useAuth()
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -50,12 +52,11 @@ function SignUp() {
       })
       const { token, user } = response.data
 
-      // Store token and user data
-      localStorage.setItem('token', token)
-      localStorage.setItem('user', JSON.stringify(user))
+      // Use AuthContext to login
+      login(token, user)
 
-      // Redirect to home page
-      navigate('/')
+      // Redirect to dashboard
+      navigate('/dashboard')
     } catch (err) {
       setError(
         err.response?.data?.msg ||

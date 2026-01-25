@@ -1,8 +1,51 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import { campaignsAPI, statsAPI } from '../services/api'
 
 function Home() {
+  const [campaigns, setCampaigns] = useState([])
+  const [stats, setStats] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchData = async () => {
+    try {
+      const [campaignsRes, statsRes] = await Promise.allSettled([
+        campaignsAPI.getAll(),
+        statsAPI.getStats(),
+      ])
+
+      if (campaignsRes.status === 'fulfilled') {
+        setCampaigns(campaignsRes.value.data.data?.slice(0, 3) || [])
+      }
+
+      if (statsRes.status === 'fulfilled') {
+        setStats(statsRes.value.data.data)
+      }
+    } catch (err) {
+      console.error('Error fetching home data:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'ETB',
+      minimumFractionDigits: 0,
+    }).format(amount)
+  }
+
+  const calculateProgress = (current, goal) => {
+    return goal > 0 ? Math.round((current / goal) * 100) : 0
+  }
+
   return (
     <>
       <Header />
@@ -12,18 +55,158 @@ function Home() {
           <div className="hero-content">
             <p className="hero-subtitle">Make your Impact</p>
             <h1>Help fund it here.</h1>
-            <Link to="/involved" className="btn btn-white">
-              Start fundraising
+            <Link to="/campaigns" className="btn btn-white">
+              Browse Campaigns
             </Link>
           </div>
         </section>
       </div>
 
+      {/* Stats Section */}
+      {stats && (
+        <section className="container" style={{ paddingTop: '4rem', paddingBottom: '2rem' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '2rem',
+            }}
+          >
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'var(--accent-blue)' }}>
+                {formatCurrency(stats.totalRaised || 0)}
+              </div>
+              <p style={{ color: '#666', marginTop: '0.5rem' }}>Total Raised</p>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#28a745' }}>
+                {stats.livesImpacted || 0}
+              </div>
+              <p style={{ color: '#666', marginTop: '0.5rem' }}>Lives Impacted</p>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#ffc107' }}>
+                {stats.activeCampaigns || 0}
+              </div>
+              <p style={{ color: '#666', marginTop: '0.5rem' }}>Active Campaigns</p>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#dc3545' }}>
+                {stats.totalVolunteers || 0}
+              </div>
+              <p style={{ color: '#666', marginTop: '0.5rem' }}>Volunteers</p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Featured Campaigns Section */}
+      {campaigns.length > 0 && (
+        <section className="container" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
+          <div className="section-header">
+            <p className="section-label">Featured Campaigns</p>
+            <h2 className="section-title">Make a difference today</h2>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '2rem',
+              marginTop: '2rem',
+            }}
+          >
+            {campaigns.map((campaign) => (
+              <Link
+                key={campaign._id}
+                to={`/campaigns/${campaign._id}`}
+                style={{
+                  border: '1px solid #e0e0e0',
+                  borderRadius: '0.5rem',
+                  overflow: 'hidden',
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  display: 'block',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-4px)'
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = 'none'
+                }}
+              >
+                <div style={{ padding: '1.5rem' }}>
+                  <h3 style={{ marginBottom: '0.5rem', color: '#333' }}>{campaign.title}</h3>
+                  <p
+                    style={{
+                      color: '#666',
+                      fontSize: '0.875rem',
+                      marginBottom: '1rem',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {campaign.description}
+                  </p>
+                  <div style={{ marginBottom: '0.5rem' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        fontSize: '0.875rem',
+                        marginBottom: '0.5rem',
+                      }}
+                    >
+                      <span style={{ color: '#666' }}>Raised</span>
+                      <span style={{ fontWeight: 'bold' }}>
+                        {formatCurrency(campaign.currentAmount || 0)} /{' '}
+                        {formatCurrency(campaign.goalAmount)}
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        width: '100%',
+                        height: '8px',
+                        backgroundColor: '#e0e0e0',
+                        borderRadius: '4px',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: `${calculateProgress(
+                            campaign.currentAmount || 0,
+                            campaign.goalAmount,
+                          )}%`,
+                          height: '100%',
+                          backgroundColor: 'var(--accent-blue)',
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+            <Link to="/campaigns" className="btn btn-primary">
+              View All Campaigns
+            </Link>
+          </div>
+        </section>
+      )}
+
       {/* Featured Topics Section */}
       <section className="container">
         <div className="section-header">
           <p className="section-label">Featured topics</p>
-          <h2 className="section-title">Make a difference today</h2>
+          <h2 className="section-title">How you can help</h2>
         </div>
 
         <div className="feature-grid">
@@ -144,7 +327,7 @@ function Home() {
             dream future. Everyone deserves to achieve their ideas without being
             held back by lack of funds.
           </p>
-          <button className="btn btn-primary mt-2">Explore now</button>
+          <Link to="/campaigns" className="btn btn-primary mt-2">Explore now</Link>
           <div className="image-grid">
             <div
               className="image-grid-item"
@@ -191,7 +374,7 @@ function Home() {
         >
           <div className="banner-content">
             <h2 style={{ color: 'white' }}>Your story starts here</h2>
-            <button className="btn btn-white">Start fundraising</button>
+            <Link to="/campaigns" className="btn btn-white">Start fundraising</Link>
           </div>
         </div>
       </section>

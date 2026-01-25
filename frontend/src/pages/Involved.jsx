@@ -210,7 +210,7 @@ function Involved() {
               min="1"
               style={{ flex: 1 }}
             />
-            <button className="btn btn-primary">Donate</button>
+            <Link to="/campaigns" className="btn btn-primary">Donate</Link>
           </div>
           <p
             style={{
@@ -546,12 +546,12 @@ function Involved() {
                 marginTop: '1.5rem',
               }}
             >
-              <a href="#donate" className="btn btn-primary">
+              <Link to="/campaigns" className="btn btn-primary">
                 Make a Donation
-              </a>
-              <a href="#volunteer" className="btn btn-secondary">
+              </Link>
+              <Link to="/volunteer/apply" className="btn btn-secondary">
                 Become a Volunteer
-              </a>
+              </Link>
               <Link to="/about" className="btn btn-secondary">
                 Learn More About Us
               </Link>

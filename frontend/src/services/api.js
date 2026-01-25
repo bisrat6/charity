@@ -57,15 +57,17 @@ export const campaignsAPI = {
 
 // Donations API calls
 export const donationsAPI = {
-  getAll: () => api.get('/donations'),
-  getById: (id) => api.get(`/donations/${id}`),
-  create: (data) => api.post('/donations', data),
+  createPaymentIntent: (data) => api.post('/donations/create-payment-intent', data),
+  getUserDonations: (userId) => api.get(`/donations/user/${userId}`),
+  getStats: () => api.get('/donations/stats'),
 }
 
 // Volunteers API calls
 export const volunteersAPI = {
-  getAll: () => api.get('/volunteers'),
-  create: (data) => api.post('/volunteers', data),
+  apply: (data) => api.post('/volunteers/apply', data),
+  getAllApplications: () => api.get('/volunteers/applications'),
+  updateStatus: (id, status) => api.put(`/volunteers/${id}/status`, { status }),
+  getByUser: (userId) => api.get(`/volunteers/user/${userId}`),
 }
 
 // Stats API calls
