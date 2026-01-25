@@ -1,7 +1,72 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
+import { authAPI } from '../services/api'
 
 function SignUp() {
+  const navigate = useNavigate()
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    })
+    setError('') // Clear error when user types
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+
+    // Client-side validation
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match')
+      setLoading(false)
+      return
+    }
+
+    if (formData.password.length < 8) {
+      setError(
+        'Password must be at least 8 characters and include letters and numbers',
+      )
+      setLoading(false)
+      return
+    }
+
+    try {
+      const response = await authAPI.signup({
+        fullName: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+      })
+      const { token, user } = response.data
+
+      // Store token and user data
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(user))
+
+      // Redirect to home page
+      navigate('/')
+    } catch (err) {
+      setError(
+        err.response?.data?.msg ||
+          err.response?.data?.errors?.[0]?.msg ||
+          'Sign up failed. Please try again.',
+      )
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <>
       <Header />
@@ -93,16 +158,33 @@ function SignUp() {
             <div className="signin-divider">Or sign up with email</div>
 
             {/* Sign Up Form */}
-            <form>
+            <form onSubmit={handleSubmit}>
+              {error && (
+                <div
+                  style={{
+                    padding: '0.75rem',
+                    marginBottom: '1rem',
+                    backgroundColor: '#fee',
+                    color: '#c33',
+                    borderRadius: '0.5rem',
+                    fontSize: '0.875rem',
+                  }}
+                >
+                  {error}
+                </div>
+              )}
+
               <div className="form-group">
-                <label htmlFor="fullname" className="form-label">
+                <label htmlFor="fullName" className="form-label">
                   Full Name
                 </label>
                 <input
                   type="text"
-                  id="fullname"
+                  id="fullName"
                   className="form-input"
                   placeholder="Enter your full name"
+                  value={formData.fullName}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -116,6 +198,8 @@ function SignUp() {
                   id="email"
                   className="form-input"
                   placeholder="your.email@example.com"
+                  value={formData.email}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -129,19 +213,26 @@ function SignUp() {
                   id="password"
                   className="form-input"
                   placeholder="Create a strong password"
+                  value={formData.password}
+                  onChange={handleChange}
                   required
                 />
+                <small style={{ fontSize: '0.75rem', color: '#666' }}>
+                  Must be at least 8 characters with letters and numbers
+                </small>
               </div>
 
               <div className="form-group">
-                <label htmlFor="confirm-password" className="form-label">
+                <label htmlFor="confirmPassword" className="form-label">
                   Confirm Password
                 </label>
                 <input
                   type="password"
-                  id="confirm-password"
+                  id="confirmPassword"
                   className="form-input"
                   placeholder="Re-enter your password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -161,8 +252,9 @@ function SignUp() {
                 type="submit"
                 className="btn btn-primary"
                 style={{ width: '100%', marginBottom: '1rem' }}
+                disabled={loading}
               >
-                Create Account
+                {loading ? 'Creating account...' : 'Create Account'}
               </button>
 
               <div className="signin-footer">

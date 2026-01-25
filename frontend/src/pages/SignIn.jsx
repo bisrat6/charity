@@ -1,7 +1,51 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
+import { authAPI } from '../services/api'
 
 function SignIn() {
+  const navigate = useNavigate()
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  })
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    })
+    setError('') // Clear error when user types
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+
+    try {
+      const response = await authAPI.signin(formData)
+      const { token, user } = response.data
+
+      // Store token and user data
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(user))
+
+      // Redirect to home page
+      navigate('/')
+    } catch (err) {
+      setError(
+        err.response?.data?.msg ||
+          err.response?.data?.errors?.[0]?.msg ||
+          'Sign in failed. Please check your credentials.',
+      )
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <>
       <Header />
@@ -94,7 +138,22 @@ function SignIn() {
             <div className="signin-divider">Or continue with email</div>
 
             {/* Sign In Form */}
-            <form>
+            <form onSubmit={handleSubmit}>
+              {error && (
+                <div
+                  style={{
+                    padding: '0.75rem',
+                    marginBottom: '1rem',
+                    backgroundColor: '#fee',
+                    color: '#c33',
+                    borderRadius: '0.5rem',
+                    fontSize: '0.875rem',
+                  }}
+                >
+                  {error}
+                </div>
+              )}
+
               <div className="form-group">
                 <label htmlFor="email" className="form-label">
                   Email Address
@@ -104,6 +163,8 @@ function SignIn() {
                   id="email"
                   className="form-input"
                   placeholder="your.email@example.com"
+                  value={formData.email}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -117,6 +178,8 @@ function SignIn() {
                   id="password"
                   className="form-input"
                   placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -149,8 +212,9 @@ function SignIn() {
                 type="submit"
                 className="btn btn-primary"
                 style={{ width: '100%', marginBottom: '1rem' }}
+                disabled={loading}
               >
-                Sign In
+                {loading ? 'Signing in...' : 'Sign In'}
               </button>
 
               <div className="signin-footer">
