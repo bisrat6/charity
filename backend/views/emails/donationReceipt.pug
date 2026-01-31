@@ -1,0 +1,36 @@
+//- Donation receipt email template for CORNERSTONE
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    title Thank You for Your Donation | CORNERSTONE
+    style.
+      body { font-family: 'Segoe UI', Arial, sans-serif; background: #f7f8fa; color: #222; margin: 0; padding: 0; }
+      .container { max-width: 520px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #e0e0e0; padding: 32px 28px; }
+      .brand { color: #1a73e8; font-weight: 700; font-size: 2rem; letter-spacing: 1px; }
+      .details { background: #f1f5fb; border-radius: 6px; padding: 18px 20px; margin: 24px 0; }
+      .footer { color: #888; font-size: 0.95rem; margin-top: 32px; text-align: center; }
+  body
+    .container
+      .brand CORNERSTONE
+      h2(style="margin-top: 24px;") Thank You for Your Donation!
+      p Dear #{name},
+      p We are incredibly grateful for your generous donation. Your support helps us continue our mission.
+      .details
+        h3 Donation Details
+        p
+          | Amount: 
+          strong #{amount}
+        p
+          | Transaction ID: 
+          strong #{id}
+        p
+          | Date: 
+          strong #{date}
+      p Please keep this email for your records.
+      p(style="margin-top: 32px;")
+        | With gratitude,
+        br
+        | The CORNERSTONE Team
+      .footer
+        | &copy; #{year} CORNERSTONE. All rights reserved.

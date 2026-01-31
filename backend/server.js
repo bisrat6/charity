@@ -33,6 +33,7 @@ app.use("/api/volunteers", require("./routes/volunteers"));
 app.use("/api/donations", require("./routes/donations"));
 app.use("/api/campaigns", require("./routes/campaigns"));
 app.use("/api/stats", require("./routes/stats"));
+app.use("/api/users", require("./routes/users"));
 
 // Root endpoint
 app.get("/", (req, res) =>

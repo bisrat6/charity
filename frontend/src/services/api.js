@@ -60,6 +60,7 @@ export const donationsAPI = {
   createPaymentIntent: (data) => api.post('/donations/create-payment-intent', data),
   getUserDonations: (userId) => api.get(`/donations/user/${userId}`),
   getStats: () => api.get('/donations/stats'),
+  verifyPayment: (data) => api.post('/donations/webhook', data),
 }
 
 // Volunteers API calls
@@ -73,6 +74,11 @@ export const volunteersAPI = {
 // Stats API calls
 export const statsAPI = {
   getStats: () => api.get('/stats'),
+}
+
+// Users API calls
+export const usersAPI = {
+  getAll: () => api.get('/users'),
 }
 
 export default api

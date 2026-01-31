@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect, useMemo } from 'react'
 import { authAPI } from '../services/api'
 
 const AuthContext = createContext()
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('user', JSON.stringify(userData))
   }
 
-  const value = {
+  const value = useMemo(() => ({
     user,
     isAuthenticated,
     loading,
@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     updateUser,
     verifyToken,
-  }
+  }), [user, isAuthenticated, loading])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

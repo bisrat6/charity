@@ -1,0 +1,24 @@
+//- Volunteer confirmation email template for CORNERSTONE
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    title Volunteer Application Received | CORNERSTONE
+    style.
+      body { font-family: 'Segoe UI', Arial, sans-serif; background: #f7f8fa; color: #222; margin: 0; padding: 0; }
+      .container { max-width: 520px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #e0e0e0; padding: 32px 28px; }
+      .brand { color: #1a73e8; font-weight: 700; font-size: 2rem; letter-spacing: 1px; }
+      .footer { color: #888; font-size: 0.95rem; margin-top: 32px; text-align: center; }
+  body
+    .container
+      .brand CORNERSTONE
+      h2(style="margin-top: 24px;") Application Received
+      p Dear #{name},
+      p Thank you for your interest in volunteering with CORNERSTONE. We have successfully received your application.
+      p Our team will review your profile and get back to you soon regarding the next steps.
+      p(style="margin-top: 32px;")
+        | Best regards,
+        br
+        | The CORNERSTONE Team
+      .footer
+        | &copy; #{year} CORNERSTONE. All rights reserved.

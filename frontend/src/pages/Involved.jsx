@@ -193,24 +193,12 @@ function Involved() {
         {/* Custom Amount */}
         <div className="text-center mt-3">
           <p style={{ color: 'var(--text-gray)', marginBottom: '1rem' }}>
-            Or enter a custom amount:
+            Want to contribute a different amount?
           </p>
-          <div
-            style={{
-              maxWidth: '400px',
-              margin: '0 auto',
-              display: 'flex',
-              gap: '0.75rem',
-            }}
-          >
-            <input
-              type="number"
-              className="form-input"
-              placeholder="Enter amount"
-              min="1"
-              style={{ flex: 1 }}
-            />
-            <Link to="/campaigns" className="btn btn-primary">Donate</Link>
+          <div style={{ marginBottom: '1rem' }}>
+            <Link to="/campaigns" className="btn btn-primary" style={{ padding: '0.75rem 2rem' }}>
+              Make a Donation
+            </Link>
           </div>
           <p
             style={{
@@ -313,138 +301,15 @@ function Involved() {
           </p>
         </div>
 
-        <div className="form-container">
-          <form>
-            {/* Personal Information */}
-            <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-dark)' }}>
-              Personal Information
-            </h3>
-
-            <div className="form-group">
-              <label htmlFor="name" className="form-label">
-                Full Name *
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="form-input"
-                placeholder="Enter your full name"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="email" className="form-label">
-                Email Address *
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="form-input"
-                placeholder="your.email@example.com"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="phone" className="form-label">
-                Phone Number *
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                className="form-input"
-                placeholder="(555) 123-4567"
-                required
-              />
-            </div>
-
-            {/* Skills & Availability */}
-            <h3
-              style={{
-                margin: '2rem 0 1.5rem',
-                color: 'var(--text-dark)',
-              }}
-            >
-              Skills & Availability
-            </h3>
-
-            <div className="form-group">
-              <label htmlFor="skillset" className="form-label">
-                Your Primary Skills *
-              </label>
-              <select id="skillset" className="form-select" required>
-                <option value="">Select your primary skillset</option>
-                <option value="construction">Construction & Building</option>
-                <option value="teaching">Education & Teaching</option>
-                <option value="healthcare">Healthcare & Medicine</option>
-                <option value="technology">Technology & IT</option>
-                <option value="finance">Finance & Accounting</option>
-                <option value="marketing">Marketing & Communications</option>
-                <option value="admin">Administration & Organization</option>
-                <option value="fundraising">Fundraising & Development</option>
-                <option value="legal">Legal Services</option>
-                <option value="other">Other (please specify in message)</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="availability" className="form-label">
-                How Often Can You Volunteer? *
-              </label>
-              <select id="availability" className="form-select" required>
-                <option value="">Select your availability</option>
-                <option value="weekly">Once a Week</option>
-                <option value="biweekly">Twice a Month</option>
-                <option value="monthly">Once a Month</option>
-                <option value="occasional">Occasional / Special Events</option>
-                <option value="remote">Remote Only (Work from Home)</option>
-                <option value="flexible">Flexible Schedule</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="interests" className="form-label">
-                Areas of Interest
-              </label>
-              <textarea
-                id="interests"
-                className="form-textarea"
-                placeholder="Tell us which programs or initiatives you're most interested in supporting (e.g., education, healthcare, community building)..."
-              ></textarea>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="message" className="form-label">
-                Additional Information
-              </label>
-              <textarea
-                id="message"
-                className="form-textarea"
-                placeholder="Share anything else you'd like us to know about your background, experience, or why you want to volunteer with CORNERSTONE..."
-              ></textarea>
-            </div>
-
-            <button
-              type="submit"
-              className="btn btn-primary"
-              style={{ width: '100%' }}
-            >
-              Submit Volunteer Application
-            </button>
-
-            <p
-              style={{
-                textAlign: 'center',
-                color: 'var(--text-gray)',
-                fontSize: '0.875rem',
-                marginTop: '1rem',
-              }}
-            >
-              * Required fields | We'll contact you within 48 hours to discuss
-              volunteer opportunities
-            </p>
-          </form>
+        <div className="form-container" style={{ textAlign: 'center', padding: '3rem', backgroundColor: '#f8f9fa', borderRadius: '0.5rem' }}>
+          <i className="fas fa-users" style={{ fontSize: '4rem', color: 'var(--accent-blue)', marginBottom: '1.5rem' }}></i>
+          <h3 style={{ marginBottom: '1rem' }}>Ready to Make a Difference?</h3>
+          <p style={{ maxWidth: '600px', margin: '0 auto 2rem', color: '#666' }}>
+            Join our community of passionate volunteers. Whether you have a few hours a month or want to commit weekly, we have a place for you.
+          </p>
+          <Link to="/volunteer/apply" className="btn btn-primary" style={{ padding: '1rem 2rem', fontSize: '1.125rem' }}>
+            Apply Now
+          </Link>
         </div>
       </section>
 

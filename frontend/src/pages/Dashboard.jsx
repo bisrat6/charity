@@ -5,8 +5,9 @@ import Footer from '../components/Footer'
 import { authAPI, donationsAPI, volunteersAPI, statsAPI } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
 
+/* Dashboard.jsx */
 function Dashboard() {
-  const { user, updateUser } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const [stats, setStats] = useState(null)
   const [donations, setDonations] = useState([])
   const [volunteerApp, setVolunteerApp] = useState(null)
@@ -14,16 +15,18 @@ function Dashboard() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetchDashboardData()
-  }, [user])
+    if (!authLoading) {
+      fetchDashboardData()
+    }
+  }, [user?._id, authLoading])
 
   const fetchDashboardData = async () => {
     try {
       setLoading(true)
       const [statsRes, donationsRes, volunteerRes] = await Promise.allSettled([
         statsAPI.getStats(),
-        user?.id ? donationsAPI.getUserDonations(user.id) : Promise.resolve(null),
-        user?.id ? volunteersAPI.getByUser(user.id) : Promise.resolve(null),
+        user?._id ? donationsAPI.getUserDonations(user._id) : Promise.resolve(null),
+        user?._id ? volunteersAPI.getByUser(user._id) : Promise.resolve(null),
       ])
 
       if (statsRes.status === 'fulfilled') {
@@ -214,34 +217,69 @@ function Dashboard() {
           >
             <h3 style={{ marginBottom: '1rem' }}>Volunteer Status</h3>
             {volunteerApp ? (
-              <div>
-                <div
-                  style={{
-                    padding: '0.5rem 1rem',
-                    backgroundColor:
-                      volunteerApp.status === 'approved' || volunteerApp.status === 'active'
-                        ? '#d4edda'
-                        : volunteerApp.status === 'pending'
-                          ? '#fff3cd'
-                          : '#f8d7da',
-                    color:
-                      volunteerApp.status === 'approved' || volunteerApp.status === 'active'
-                        ? '#155724'
-                        : volunteerApp.status === 'pending'
-                          ? '#856404'
-                          : '#721c24',
-                    borderRadius: '0.25rem',
-                    display: 'inline-block',
-                    marginBottom: '1rem',
-                    textTransform: 'capitalize',
-                  }}
-                >
-                  {volunteerApp.status}
-                </div>
-                <p style={{ fontSize: '0.875rem', color: '#666' }}>
-                  Application submitted on{' '}
-                  {new Date(volunteerApp.createdAt).toLocaleDateString()}
-                </p>
+              <div style={{ textAlign: 'center' }}>
+                {(volunteerApp.status === 'approved' || volunteerApp.status === 'active') ? (
+                  <div style={{ padding: '1rem' }}>
+                    <div style={{
+                      width: '60px',
+                      height: '60px',
+                      background: '#d4edda',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: '0 auto 1rem',
+                      color: '#155724'
+                    }}>
+                      <i className="fas fa-check" style={{ fontSize: '1.5rem' }}></i>
+                    </div>
+                    <h4 style={{ color: '#155724', marginBottom: '0.5rem' }}>You are a Volunteer!</h4>
+                    <p style={{ fontSize: '0.875rem', color: '#666' }}>
+                      Thank you for joining our cause.
+                    </p>
+                    <div
+                      style={{
+                        marginTop: '1rem',
+                        padding: '0.25rem 0.75rem',
+                        backgroundColor: '#d4edda',
+                        color: '#155724',
+                        borderRadius: '1rem',
+                        display: 'inline-block',
+                        fontSize: '0.75rem',
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase'
+                      }}
+                    >
+                      {volunteerApp.status}
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <div
+                      style={{
+                        padding: '0.5rem 1rem',
+                        backgroundColor:
+                          volunteerApp.status === 'pending'
+                            ? '#fff3cd'
+                            : '#f8d7da',
+                        color:
+                          volunteerApp.status === 'pending'
+                            ? '#856404'
+                            : '#721c24',
+                        borderRadius: '0.25rem',
+                        display: 'inline-block',
+                        marginBottom: '1rem',
+                        textTransform: 'capitalize',
+                      }}
+                    >
+                      {volunteerApp.status}
+                    </div>
+                    <p style={{ fontSize: '0.875rem', color: '#666' }}>
+                      Application submitted on{' '}
+                      {new Date(volunteerApp.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
               </div>
             ) : (
               <div>

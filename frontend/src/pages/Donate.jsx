@@ -77,11 +77,33 @@ function Donate() {
         setError('Failed to initialize payment. Please try again.')
       }
     } catch (err) {
-      setError(
-        err.response?.data?.error ||
-          err.response?.data?.msg ||
-          'Failed to process donation. Please try again.',
-      )
+      // Extract error message from various possible error formats
+      let errorMsg = 'Failed to process donation. Please try again.'
+
+      if (err.response?.data) {
+        const data = err.response.data
+
+        // Handle string error
+        if (typeof data.error === 'string') {
+          errorMsg = data.error
+        }
+        // Handle Chapa validation errors (object with field errors)
+        else if (typeof data.error === 'object' && data.error !== null) {
+          const errors = Object.entries(data.error)
+            .map(([field, msgs]) => `${field}: ${Array.isArray(msgs) ? msgs.join(', ') : msgs}`)
+            .join('; ')
+          errorMsg = `Validation error: ${errors}`
+        }
+        // Handle other message formats
+        else if (data.msg) {
+          errorMsg = data.msg
+        }
+        else if (data.message) {
+          errorMsg = data.message
+        }
+      }
+
+      setError(errorMsg)
     } finally {
       setLoading(false)
     }
@@ -219,9 +241,9 @@ function Donate() {
                 <span style={{ fontWeight: 'bold' }}>
                   {formData.amount
                     ? new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'ETB',
-                      }).format(parseFloat(formData.amount) || 0)
+                      style: 'currency',
+                      currency: 'ETB',
+                    }).format(parseFloat(formData.amount) || 0)
                     : 'ETB 0'}
                 </span>
               </div>

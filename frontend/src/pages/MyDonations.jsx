@@ -6,21 +6,25 @@ import { donationsAPI } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
 
 function MyDonations() {
-  const { user } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const [donations, setDonations] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
   useEffect(() => {
-    if (user?.id) {
-      fetchDonations()
+    if (!authLoading) {
+      if (user?._id) {
+        fetchDonations()
+      } else {
+        setLoading(false)
+      }
     }
-  }, [user])
+  }, [user?._id, authLoading])
 
   const fetchDonations = async () => {
     try {
       setLoading(true)
-      const response = await donationsAPI.getUserDonations(user.id)
+      const response = await donationsAPI.getUserDonations(user._id)
       setDonations(response.data.donations || [])
       setError('')
     } catch (err) {

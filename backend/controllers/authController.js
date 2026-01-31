@@ -32,7 +32,7 @@ exports.signup = async (req, res) => {
     res.json({
       token,
       user: {
-        id: user.id,
+        _id: user.id,
         fullName: user.fullName,
         email: user.email,
         role: user.role,
@@ -62,7 +62,7 @@ exports.signin = async (req, res) => {
     res.json({
       token,
       user: {
-        id: user.id,
+        _id: user.id,
         fullName: user.fullName,
         email: user.email,
         role: user.role,
